@@ -10,16 +10,21 @@ export default class SearchBar extends Component {
 	search(e) {
 		//TODO cleaning words (special char , accent)
 		//TODO lazy loading in json parameters file
-		if(e.target.value.length >= 3 && this.props.countListVids < 100 ) {
-			this.lazyLoading(e.target.value);
+		if(e.target.value.length >= 3 && this.props.initListVids.length < 100 ) {
+			console.log(e.target.value);
+			this.lazyLoading(e.target.value);		
+		} 
+		if (e.target.value.length == 0 ){
+			this.props.updateList(this.props.initListVids, true);
 		}
+        
 	}
 
 	lazyLoading(value){
-		var tab = this.props.listVids.filter(function(el) {
+		var tab = this.props.initListVids.filter(function(el) {
 			return el.search.toLowerCase().indexOf(value.toLowerCase()) > -1;
 		});
-		this.props.updateList(tab);
+		this.props.updateList(tab, false);
 	}
 
 	render() {

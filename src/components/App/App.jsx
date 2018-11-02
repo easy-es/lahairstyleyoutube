@@ -8,6 +8,7 @@ export default class App extends Component {
   		super(props);
 
   		this.state = {
+  			initListVids:null,
   			listVids : null,
   			countListVids : null
   		}
@@ -15,17 +16,27 @@ export default class App extends Component {
   		this.updateList = this.updateList.bind(this);
   	}
 
-	updateList(listVids) {
-		this.setState({
-			listVids : listVids,
-			countListVids : listVids.length
-		});
+	updateList(listVids , init) {
+
+		if( init == true ) {
+			this.setState({
+				initListVids : listVids,
+				listVids : listVids
+			});
+		} else {
+			this.setState({
+				listVids : listVids
+			});
+		}
 	}
 
 	render() {
 	    return (
 	    	<div>
-	    		<SearchBar listVids = {this.state.listVids} countListVids={this.state.countListVids} updateList = {this.updateList.bind(this)}  />
+	    		<SearchBar 
+	    		listVids = {this.state.listVids} 
+	    		initListVids = {this.state.initListVids}
+	    		updateList = {this.updateList.bind(this)}  />
 	        	<YoutubeApi updateList = {this.updateList.bind(this)} listVids = {this.state.listVids} />
 	      </div>
 	    );

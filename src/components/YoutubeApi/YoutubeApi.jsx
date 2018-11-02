@@ -43,7 +43,7 @@ import YoutubeVideosList from '../YoutubeVideosList/YoutubeVideosList.jsx'
 
 		for( var i = 0; i < listVids.length; i++)
 		$.post(
-			"http://localhost/lahairstyleyoutube/my-app/index.php/api/video/create",
+			"index.php/api/video/create",
 				{
 					title: listVids[i].title,
 					description: listVids[i].description,
@@ -98,7 +98,7 @@ import YoutubeVideosList from '../YoutubeVideosList/YoutubeVideosList.jsx'
 			vids.push(obj);
 		}
 
-		this.props.updateList(vids);
+		this.props.updateList(vids,true);
 	}
 
 	readParameters() {
