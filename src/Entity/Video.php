@@ -34,6 +34,11 @@ class Video
 	private $search;
 
 	/**
+	* @var string
+	**/
+	private $date;
+
+	/**
 	 * @return int
 	 */
 	public function getId() {
@@ -109,4 +114,12 @@ class Video
     public function getSearch() {
     	return $this->search;
     }
+
+    public function setDate($date) {
+    	return $this->date = $date;
+    }
+
+    public function getDate() {
+    	return $this->date;
+    } 
 }

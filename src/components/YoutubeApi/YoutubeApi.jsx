@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import $ from "jquery";
-import YoutubeVideosList from '../YoutubeVideosList/YoutubeVideosList.jsx'
+import $ from 'jquery';
+import YoutubeVideosList from '../YoutubeVideosList/YoutubeVideosList.jsx';
+import moment from 'moment';
 
  class YoutubeApi extends Component {
 	
@@ -8,6 +9,7 @@ import YoutubeVideosList from '../YoutubeVideosList/YoutubeVideosList.jsx'
 		super(props);
 		this.getVids = this.getVids.bind(this);
 		this.handleClick = this.handleClick.bind(this);
+		this.jsonToObject = this.jsonToObject.bind(this);
 	}
 
 	callCredentitial() {
@@ -63,8 +65,7 @@ import YoutubeVideosList from '../YoutubeVideosList/YoutubeVideosList.jsx'
 		$.get(
 			"index.php/api/videos",
 		).then(data => {
-				console.log('i called you getVidsFromDB'); 
-				this.props.updateList(this.jsonToObject(data),true)
+				this.props.updateList(this.jsonToObject(data),true);
 			}
 		);
 	}
@@ -79,7 +80,8 @@ import YoutubeVideosList from '../YoutubeVideosList/YoutubeVideosList.jsx'
 					description: listVids[i].description,
 					videoId : listVids[i].videoId,
 					thumbnail : listVids[i].thumbnail,
-					search : listVids[i].search
+					search : listVids[i].search,
+					date : listVids[i].date
 				},
 			"json"
 		);
@@ -115,7 +117,8 @@ import YoutubeVideosList from '../YoutubeVideosList/YoutubeVideosList.jsx'
 				var videoId = isFromYoutube ? data[i].snippet.resourceId.videoId : data[i].videoId;
 				var description = isFromYoutube ? data[i].snippet.description : data[i].description;
 				var thumbnail = isFromYoutube ? data[i].snippet.thumbnails.default.url : data[i].thumbnail;
-				var search = null; 
+				var date = isFromYoutube ? new Date(data[i].snippet.publishedAt).getTime() : data[i].date; 
+				var search = null;
 				//description.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
 				
 				var obj = {
@@ -123,14 +126,16 @@ import YoutubeVideosList from '../YoutubeVideosList/YoutubeVideosList.jsx'
 					videoId : videoId,
 					description : description,
 					thumbnail : thumbnail,
-					search : title+description //search.sansAccent()
-				};
+					search : title+description, //search.sansAccent()
+					date : date
+				}; 
 				
 				vids.push(obj);
 			}
 			if (this.props.listVids != null) {	
-				vids = vids.filter(function(e) {
-					this.props.listVids.forEach(function(vid) {
+				var tab = this.props.listVids;
+				tab.forEach(function(vid) {
+					vids = vids.filter(function(e) {
 						if (e.videoId === vid.videoId) {
 							return false;
 						}
@@ -140,7 +145,7 @@ import YoutubeVideosList from '../YoutubeVideosList/YoutubeVideosList.jsx'
 
 			if (vids.length > 1 ) {
 				return vids;
-			}
+			} 
 		}
 	}
 
@@ -174,10 +179,10 @@ import YoutubeVideosList from '../YoutubeVideosList/YoutubeVideosList.jsx'
 		return (
 			
 			<div> 
-			{message} 
-			<div>
-				<button type="button" className="btn" onClick={this.handleClick}> Importer video de Youtube </button>
-			</div>
+				{message} 
+				<div>
+					<button type="button" className="btn" onClick={this.handleClick}> Importer video de Youtube </button>
+				</div>
 				<div>
 					{videoList}
 				</div>

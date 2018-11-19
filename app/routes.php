@@ -16,19 +16,20 @@ $app->get('/api/videos', function () use ($app) {
 			'title' => $video->getTitle(),
 			'description' => $video->getDescription(),
 			'videoId' => $video->getVideoId(),
-			'thumbnail' => $video->getThumbnail()
+			'thumbnail' => $video->getThumbnail(),
+			'date' => $video->getDate()
 		);
 	}
 
 	return $app->json($responseData);
-})->bind('api_videos');
+	})->bind('api_videos');
 
 // Create video
 $app->post('/api/video/create', function (Request $request) use ($app) {
 	try {
 			if (!$request->request->has('title') || !$request->request->has('videoId')) {
 				return $app->json('Missing parameter: title or videoId', 400);
-			}
+			} 
 	
 			$video = new LaHairstyleApi\Entity\Video();
 			$video->setTitle($request->request->get('title'));
@@ -36,6 +37,7 @@ $app->post('/api/video/create', function (Request $request) use ($app) {
 			$video->setDescription($request->request->get('description'));
 			$video->setThumbnail($request->request->get('thumbnail'));
 			$video->setSearch($request->request->get('search'));
+			$video->setDate($request->request->get('date'));
 			$app['dao.user']->save($video);
 
 			$responseData = array(
@@ -57,6 +59,13 @@ $app->post('/api/video/create', function (Request $request) use ($app) {
 		    );
 	}
 })->bind('api_user_add'); 
+
+$app->delete('/api/video/delete',function( Request $request) use ($app) {
+	$id = ($request->request->get('videoId'));
+	$video = $app['dao.user']->delete($id);
+
+	return $app->json(202);
+})->bind('api_video_delete');
 
 // Update user
 $app->put('/api/user/update/{id}', function ($id, Request $request) use ($app) {

@@ -31,13 +31,13 @@ export default class App extends Component {
 	}
 
 	render() {
-		
+
 	    return (
-	    	<div>
+	    	<div className="container">
 	    		<SearchBar 
-	    		listVids = {this.state.listVids} 
-	    		initListVids = {this.state.initListVids}
-	    		updateList = {this.updateList.bind(this)}  />
+		    		listVids = {this.state.listVids} 
+		    		initListVids = {this.state.initListVids}
+		    		updateList = {this.updateList.bind(this)}  />
 	        	<YoutubeApi updateList = {this.updateList.bind(this)} listVids = {this.state.listVids} />
 	      </div>
 	    );

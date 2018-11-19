@@ -30,6 +30,10 @@ class VideoDAO
 		return $entities;
 	}
 
+	public function find($id) {
+
+	}
+
 	public function save($video)
 	{
 		$videoData = array(
@@ -37,7 +41,8 @@ class VideoDAO
 			'description' => $video->getDescription(),
 			'videoid' => $video->getVideoId(),
 			'thumbnail' => $video->getThumbnail(),
-			'search' => $video->getSearch()
+			'search' => $video->getSearch(),
+			'date' => $video->getDate()
 		);
 
 		// TODO CHECK
@@ -50,6 +55,12 @@ class VideoDAO
 		}
 	}
 
+	public function delete($videoId) {
+		//if ($video->getId()) {
+			$this->getDb()->delete('video',array('videoid' =>$videoId));
+		//}
+	}
+
 	protected function buildDomainObjects($row)
 	{
 		$video = new Video();
@@ -59,6 +70,7 @@ class VideoDAO
 		$video->setVideoId($row['videoid']);
 		$video->setThumbnail($row['thumbnail']);
 		$video->setSearch($row['search']);
+		$video->setDate($row['date']);
 
 		return $video;
 	}
