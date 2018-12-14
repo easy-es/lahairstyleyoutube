@@ -14,6 +14,8 @@ class YoutubeVideo extends Component {
 			data:{videoId: id},
 			type:'DELETE'
 		});
+		//reference to delete in array javascript
+		this.props.dia(id);
 	}
 
 	render() {
@@ -24,7 +26,7 @@ class YoutubeVideo extends Component {
 					<img  className="" src={this.props.vid.thumbnail} alt={this.props.vid.title} />
 					<div className="">
 						<h5 className=""> {this.props.vid.title} </h5>
-						<div className="">{moment(this.props.date).format('DD-MM-YYYY')}</div>
+						<div className="">{ moment(this.props.vid.publication,"YYYY-MM-DD").format("DD-MM-YYYY")}</div>
 						<div className="text-truncate">{this.props.vid.description}</div>
 					</div>
 					<button onClick={() => this.delete(this.props.vid.videoId)}> Supprimer</button>

@@ -17,12 +17,30 @@ $app->get('/api/videos', function () use ($app) {
 			'description' => $video->getDescription(),
 			'videoId' => $video->getVideoId(),
 			'thumbnail' => $video->getThumbnail(),
-			'date' => $video->getDate()
+			'date' => $video->getDate(),
+			'publication' => $video->getPublication()
 		);
 	}
 
 	return $app->json($responseData);
 	})->bind('api_videos');
+
+$app->get('/api/date',function () use ($app) {
+
+	$videos = $app['dao.user']->getDates();
+	$responseData = array();
+
+	foreach ($videos as $video) {
+
+		$responseData[] = array('datepublication' => 
+			$video['datepublication']
+		);
+	}
+		
+
+	return $app->json($responseData);
+	
+});
 
 // Create video
 $app->post('/api/video/create', function (Request $request) use ($app) {
@@ -38,11 +56,14 @@ $app->post('/api/video/create', function (Request $request) use ($app) {
 			$video->setThumbnail($request->request->get('thumbnail'));
 			$video->setSearch($request->request->get('search'));
 			$video->setDate($request->request->get('date'));
+			$video->setPublication($request->get('publication'));
 			$app['dao.user']->save($video);
 
 			$responseData = array(
 				'id' => $video->getId(),
-				'title' => $video->getTitle()
+				'videoId' => $video->getVideoId(),
+				'date' => $video->getDate(),
+				'publication' => $video->getPublication()
 			);
 
 			return $app->json($responseData, 201);

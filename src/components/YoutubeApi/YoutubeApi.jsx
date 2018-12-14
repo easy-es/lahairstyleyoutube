@@ -81,7 +81,8 @@ import moment from 'moment';
 					videoId : listVids[i].videoId,
 					thumbnail : listVids[i].thumbnail,
 					search : listVids[i].search,
-					date : listVids[i].date
+					date : listVids[i].date,
+					publication: listVids[i].publication
 				},
 			"json"
 		);
@@ -119,6 +120,12 @@ import moment from 'moment';
 				var thumbnail = isFromYoutube ? data[i].snippet.thumbnails.default.url : data[i].thumbnail;
 				var date = isFromYoutube ? new Date(data[i].snippet.publishedAt).getTime() : data[i].date; 
 				var search = null;
+				var publication = null;
+				if (isFromYoutube) {
+				 publication = new Date(data[i].snippet.publishedAt);
+				 publication = publication.getFullYear() + '-'+ publication.getMonth()+'-'+publication.getDate()
+				} else 
+				publication =  data[i].publication;
 				//description.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
 				
 				var obj = {
@@ -127,7 +134,8 @@ import moment from 'moment';
 					description : description,
 					thumbnail : thumbnail,
 					search : title+description, //search.sansAccent()
-					date : date
+					date : date,
+					publication : publication
 				}; 
 				
 				vids.push(obj);
@@ -174,7 +182,7 @@ import moment from 'moment';
 		var message = null;
 		var videoList = null;
 
-		videoList = (this.props.listVids != null) ? <YoutubeVideosList listVids={this.props.listVids} /> : null;
+		videoList = (this.props.listVids != null) ? <YoutubeVideosList listVids={this.props.listVids} updateList = {this.props.updateList} /> : null;
 
 		return (
 			

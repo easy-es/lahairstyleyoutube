@@ -34,9 +34,18 @@ class Video
 	private $search;
 
 	/**
-	* @var string
+	* @var integer
 	**/
 	private $date;
+
+	/**
+	* @var string
+	**/
+	private $publication;
+
+	public function __toString() {
+		return $this->videoId.$this->title.$this->description.$this->date.$this->search;
+	}
 
 	/**
 	 * @return int
@@ -122,4 +131,12 @@ class Video
     public function getDate() {
     	return $this->date;
     } 
+
+    public function getPublication() {
+    	return $this->publication;
+    }
+
+    public function setPublication($publication) {
+    	$this->publication = $publication;
+    }
 }

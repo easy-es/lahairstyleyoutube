@@ -34,6 +34,13 @@ class VideoDAO
 
 	}
 
+	public function getDates() {
+		$sql = "SELECT distinct concat(date_format(publication,'%M'),' ',date_format(publication,'%Y')) as datepublication  FROM video ";
+		$result = $this->getDb()->fetchAll($sql);
+
+		return $result;
+	}
+
 	public function save($video)
 	{
 		$videoData = array(
@@ -42,7 +49,8 @@ class VideoDAO
 			'videoid' => $video->getVideoId(),
 			'thumbnail' => $video->getThumbnail(),
 			'search' => $video->getSearch(),
-			'date' => $video->getDate()
+			'date' => $video->getDate(),
+			'publication' => $video->getPublication()
 		);
 
 		// TODO CHECK
@@ -52,6 +60,7 @@ class VideoDAO
 			$this->getDb()->insert('video', $videoData);
 			$id = $this->getDb()->lastInsertId();
 			$video->setId($id);
+			echo $video;
 		}
 	}
 
@@ -71,6 +80,7 @@ class VideoDAO
 		$video->setThumbnail($row['thumbnail']);
 		$video->setSearch($row['search']);
 		$video->setDate($row['date']);
+		$video->setPublication($row['publication']);
 
 		return $video;
 	}
