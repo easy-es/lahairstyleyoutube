@@ -30,12 +30,23 @@ class VideoDAO
 		return $entities;
 	}
 
-	public function find($id) {
+	public function findByDate($date) {
+		$sql  = "SELECT * FROM video WHERE publication > ?";
+		$request = $this->getDb()->prepare($sql);
+		$request->bindValue(1, $date);
+		$result = $this->getDb()->fetchAll($sql);
 
+		$entities = array();
+		foreach ( $result as $row ) {
+			$id = $row['id'];
+			$entities[$id] = $this->buildDomainObjects($row);
+		}
+
+		return $entities;
 	}
 
 	public function getDates() {
-		$sql = "SELECT distinct concat(date_format(publication,'%M'),' ',date_format(publication,'%Y')) as datepublication  FROM video ";
+		$sql = "SELECT distinct concat(date_format(publication,'%M'),' ',date_format(publication,'%Y')) as datepublication, publication  FROM video ";
 		$result = $this->getDb()->fetchAll($sql);
 
 		return $result;

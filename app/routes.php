@@ -32,8 +32,9 @@ $app->get('/api/date',function () use ($app) {
 
 	foreach ($videos as $video) {
 
-		$responseData[] = array('datepublication' => 
-			$video['datepublication']
+		$responseData[] = array(
+			'datepublication' => $video['publication'],
+			'formatDate' => $video['datepublication']
 		);
 	}
 		

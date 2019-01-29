@@ -37,7 +37,7 @@ export default class App extends Component {
 	    		<SearchBar 
 		    		listVids = {this.state.listVids} 
 		    		initListVids = {this.state.initListVids}
-		    		updateList = {this.updateList.bind(this)}  />
+		    		updateList = {this.updateList.bind(this)}  /> 
 	        	<YoutubeApi updateList = {this.updateList.bind(this)} listVids = {this.state.listVids} />
 	      </div>
 	    );
